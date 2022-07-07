@@ -36,7 +36,7 @@ We are also going to use the [FFmpegBlazor](https://www.nuget.org/packages/FFmpe
 
 ## Demo
 
-In the following demo we will create a Stand-Alone Blazor WebAssembly application, and I will show you how to use `FFmpegBlazor` to edit video and audio right from the browser.
+In the following demo we will create a Stand-Alone Blazor WebAssembly application.
 
 ### Create a Stand-Alone Blazor WebAssembly Application 
 
@@ -48,11 +48,11 @@ Name it `FFmpegBlazorDemo`
 
 To create a stand-alone WebAssembly app, make sure you do **NOT** select `ASP.NET Core hosted` on the next screen.
 
-![image-20220707093429451](./md-images\image-20220707093429451.png)
+![image-20220707093429451](./md-images/image-20220707093429451.png)
 
 Add a NuGet reference to `FFmpegBlazor` library.
 
-![image-20220707094003250](./md-images\image-20220707094003250.png)
+![image-20220707094003250](./md-images/image-20220707094003250.png)
 
   
 
@@ -64,7 +64,7 @@ From the `FFmpegBlazor` NuGet docs:
 ffmpeg.wasm is a pure Webassembly / Javascript port of FFmpeg. It enables video & audio record, convert and stream right inside browsers.
 FFmpegBlazor integrates nicely with Blazor InputFile Component. Supports Lazy loading of ffmpeg binary. It is self hosted version one time download of core ffmpeg wasm lib will be 25Mb."
 
-What that means is, on first load, we are only going to see a couple of tiny JavaScript files being downloaded.
+On first load, we are only going to see a couple of tiny JavaScript files being downloaded:
 
 ![image-20220707094256159](./md-images/image-20220707094256159.png)  
 
@@ -72,7 +72,7 @@ Then, when we actually use the library, the 25 MB core FFmpeg WASM library will 
 
 ![Core FFmpeg WASM library](md-images/8c5560554a5c4b97a67f8ca4d2106f1095d902af61696103b615647a0b218600.png)  
 
-As you can see, the 25 MB just took 177 ms to download on my machine, so do not get discouraged by that.
+As you can see, the 25 MB just took 177 ms to download on my machine.
 
 So, let's give it a try!
 
@@ -87,7 +87,7 @@ The workaround is to add two headers in a web.config file (also required on the 
 1. Cross-Origin-Embedder-Policy: require-corp
 2. Cross-Origin-Opener-Policy: same-origin
 
-Add a *web.config* file to the root of our project, with the following content:
+Add a *web.config* file to the root of the project, with the following content:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -103,7 +103,7 @@ Add a *web.config* file to the root of our project, with the following content:
 </configuration>
 ```
 
-And make sure `Build Action` is set to `Content`, and `Copy to Output Directory` is set to `Copy if newer`.
+Make sure `Build Action` is set to `Content`, and `Copy to Output Directory` is set to `Copy if newer`.
 
 ![Web.config Properties](md-images/84eb9162e6878e49e429f985910bb5b99a87fbbca6f7a11c13688c794e9d6053.png)
 
@@ -125,9 +125,9 @@ The first demo we are going to do, is to replicate the sample code in the NuGet 
 
 #### Logger Component
 
-The sample demo in the NuGet package docs, is logging data to the browser's console logs, let's create a `Logger` component, so we can see the logs right on the page, as well as as progress indicator.
+The sample demo in the NuGet package docs logs data to the browser's console logs, let's create a `Logger` component, so we can see the logs right on the page, as well as as progress indicator.
 
-Add a *Logger.razor* component to the *Shared* folder, with the following code:
+Add a *Logger.razor* razor component to the *Shared* folder, with the following code:
 
 ```c#
 <div>
@@ -140,7 +140,7 @@ Add a *Logger.razor* component to the *Shared* folder, with the following code:
 
 @code {
     [Parameter]
-    public int Rows { get; set; } = 20;
+    public int Rows { get; set; } = 10;
 
     [Parameter]
     public string Progress { get; set; } = string.Empty;
