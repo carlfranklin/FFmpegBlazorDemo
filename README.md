@@ -1,23 +1,3 @@
-# Table of Contents
-
-- [Table of Contents](#table-of-contents)
-  - [Introduction](#introduction)
-  - [Prerequisites](#prerequisites)
-    - [.NET 6.0](#net-60)
-    - [Visual Studio 2022](#visual-studio-2022)
-    - [ASP.NET and web development Workload](#aspnet-and-web-development-workload)
-    - [FFmpegBlazor](#ffmpegblazor)
-  - [Demo](#demo)
-    - [Create a Blazor WebAssembly Application](#create-a-blazor-webassembly-application)
-    - [Convert MP4 to MP3](#convert-mp4-to-mp3)
-      - [Logger Component](#logger-component)
-    - [Create Video](#create-video)
-    - [Video Watermark](#video-watermark)
-    - [Concatenate Videos](#concatenate-videos)
-  - [Summary](#summary)
-  - [Complete Code](#complete-code)
-  - [Resources](#resources)
-
 ## Introduction
 
 In this episode, we are going to build a Blazor WebAssembly application, and I am going to show you how to edit videos, and audio using `FFmpegBlazor`.
