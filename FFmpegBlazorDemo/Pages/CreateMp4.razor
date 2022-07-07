@@ -74,8 +74,6 @@ The output video will be as long as the audio file.
 
         // Get first file from input selection
         var file = i.GetMultipleFiles()[0];
-
-
         
         // Read all bytes
         using var stream = file.OpenReadStream(maxSize);
@@ -169,7 +167,6 @@ The output video will be as long as the audio file.
             // Re render DOM
             StateHasChanged();
         }
-        
     }
 
     private void LogToConsole(Logs message)

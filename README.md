@@ -158,7 +158,6 @@ Now, go to the *Pages/index.razor* page and replace the code with this code:
 @page "/"
 @using FFmpegBlazor
 @inject IJSRuntime Runtime
-@using Microsoft.AspNetCore.Components.Forms
 @implements IDisposable
 
 <PageTitle>Convert MP4 to MP3</PageTitle>
@@ -464,8 +463,6 @@ The output video will be as long as the audio file.
 
         // Get first file from input selection
         var file = i.GetMultipleFiles()[0];
-
-
         
         // Read all bytes
         using var stream = file.OpenReadStream(maxSize);
@@ -559,7 +556,6 @@ The output video will be as long as the audio file.
             // Re render DOM
             StateHasChanged();
         }
-        
     }
 
     private void LogToConsole(Logs message)
@@ -614,7 +610,6 @@ Add a new *Watermark.razor* file and copy the following code:
 @page "/watermark"
 @using FFmpegBlazor
 @inject IJSRuntime Runtime
-@using Microsoft.AspNetCore.Components.Forms
 @implements IDisposable
 
 <PageTitle>Video Watermark</PageTitle>
@@ -834,7 +829,6 @@ Let's create *Pages/Concatenate.razor*, and add the following code:
 ```c#
 @page "/concatenate"
 @using FFmpegBlazor
-@using Microsoft.AspNetCore.Components.Forms
 @implements IDisposable
 
 <PageTitle>Concatenate Videos</PageTitle>
