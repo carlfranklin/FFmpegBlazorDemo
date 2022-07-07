@@ -4,7 +4,7 @@
   - [Introduction](#introduction)
   - [Prerequisites](#prerequisites)
     - [.NET 6.0](#net-60)
-    - [Visual Studio 2022 Preview](#visual-studio-2022-preview)
+    - [Visual Studio 2022](#visual-studio-2022)
     - [ASP.NET and web development Workload](#aspnet-and-web-development-workload)
     - [FFmpegBlazor](#ffmpegblazor)
   - [Demo](#demo)
