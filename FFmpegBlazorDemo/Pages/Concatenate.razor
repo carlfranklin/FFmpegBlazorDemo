@@ -1,0 +1,209 @@
+﻿@page "/concatenate"
+@using FFmpegBlazor
+@using Microsoft.AspNetCore.Components.Forms
+@implements IDisposable
+
+<PageTitle>Concatenate Videos</PageTitle>
+
+<h1>Concatenate Videos</h1>
+Concatenate two videos into one video.
+<br />
+<br />
+<div>
+    <label for="videoFile1">Video file 1:</label>
+    <InputFile id="videoFile1" OnChange="LoadVideoFile1" />
+</div>
+<br />    
+<video width="300" autoplay controls src="@videoInputUrl1" />
+
+<div>
+    <label for="videoFile2">Video file 2:</label>
+    <InputFile id="videoFile2" OnChange="LoadVideoFile2" />
+</div>
+<br />
+<video width="300" autoplay controls src="@videoInputUrl2" />
+<br />
+<br />
+<input type="checkbox" @bind-value="@download" />&nbsp;Download Output File
+<br />
+<br />
+<button class="btn btn-primary" @onclick="Process">Concatenate Videos</button>
+<br />
+<br />
+<video width="300" autoplay controls src="@videoOutputUrl" />
+<br />
+<br />
+<Logger LogMessages="@logMessages" Progress="@progressMessage" Rows="10" />
+
+@code
+{
+    FFMPEG? ffMpeg;
+    byte[]? videoBuffer1;
+    byte[]? videoBuffer2;
+    string videoInputUrl1 = string.Empty;
+    string videoInputUrl2 = string.Empty;
+    string videoOutputUrl = string.Empty;
+    string logMessages = string.Empty;
+    string progressMessage = string.Empty;
+    bool download = false;
+    const string inputFile1 = "videoInput1.mp4";
+    const string inputFile2 = "videoInput2.mp4";
+    const string outputFile = "output.mp4";
+    const int maxSize = 100000000;
+
+    protected override void OnInitialized()
+    {
+        // Wire-up events
+        if (FFmpegFactory.Runtime != null)
+        {
+            FFmpegFactory.Logger += LogToConsole;
+            FFmpegFactory.Progress += ProgressChange;
+        }
+        base.OnInitialized();
+    }
+
+    private async void LoadVideoFile1(InputFileChangeEventArgs v)
+    {
+        // Clear logs and progress
+        logMessages = string.Empty;
+        progressMessage = string.Empty;
+
+        // Unlink files if previously called
+        if (ffMpeg != null)
+        {
+            if (videoInputUrl1 != string.Empty)
+            {
+                videoInputUrl1 = "";
+                ffMpeg.UnlinkFile(inputFile1);
+            }
+
+            if (inputFile2 != string.Empty)
+            {
+                videoInputUrl2 = "";
+                ffMpeg.UnlinkFile(inputFile2);
+            }
+        }
+
+        // Get first file from input selection
+        var file = v.GetMultipleFiles()[0];
+
+        // Read all bytes
+        using var stream = file.OpenReadStream(maxSize);
+        videoBuffer1 = new byte[file.Size];
+
+        // Read all bytes
+        await stream.ReadAsync(videoBuffer1);
+
+        // Create a video link from the buffer,
+        // so that video can be played and/or downloaded
+        videoInputUrl1 = FFmpegFactory.CreateURLFromBuffer(videoBuffer1,
+            inputFile1, file.ContentType);
+
+        // Re render DOM
+        StateHasChanged();
+    }
+
+    private async void LoadVideoFile2(InputFileChangeEventArgs v)
+    {
+        // Get first file from input selection
+        var file = v.GetMultipleFiles()[0];
+
+        // Read all bytes
+        using var stream = file.OpenReadStream(maxSize);
+        videoBuffer2 = new byte[file.Size];
+
+        // Read all bytes
+        await stream.ReadAsync(videoBuffer2);
+
+        // Create a video link from the buffer,
+        // so that video can be played and/or downloaded
+        videoInputUrl2 = FFmpegFactory.CreateURLFromBuffer(videoBuffer2,
+            inputFile2, file.ContentType);
+
+        // Re render DOM
+        StateHasChanged();
+    }
+
+    private async void Process()
+    {
+        // Create an instance of FFmpeg
+        ffMpeg = FFmpegFactory.CreateFFmpeg(new FFmpegConfig() { Log = true });
+
+        // Download all dependencies from the CDN
+        await ffMpeg.Load();
+
+        if (!ffMpeg.IsLoaded) return;
+
+        // Write buffer to in-memory files (special emscripten files,
+        // FFmpeg only interacts with this file)
+        ffMpeg.WriteFile(inputFile1, videoBuffer1);
+        ffMpeg.WriteFile(inputFile2, videoBuffer2);
+
+        // Pass CLI argument here equivalent to ffmpeg -i inputFile1.mp4
+        // -i inputFile2.mp4 outputFile.mp3 -filter_complex concat=n=2:v=1:a=0
+        // -vn -y output.mp4
+        await ffMpeg.Run("-i", inputFile1, "-i",
+            inputFile2, "-filter_complex", "concat=n=2:v=1:a=0",
+            "-vn", "-y", outputFile);
+
+        // Delete in-memory files
+        ffMpeg.UnlinkFile(inputFile1);
+        ffMpeg.UnlinkFile(inputFile2);
+    }
+
+    private async void ProgressChange(Progress message)
+    {
+        // Display progress % (0-1)
+        // Cap progress as it doesn't always report (0-1)
+        var progressRatio =
+            message.Ratio <= 0 ? 0 : message.Ratio >= 100 ? 1 : message.Ratio;
+        progressMessage = $"Progress: {progressRatio.ToString("P2")}";
+
+        Console.WriteLine(progressMessage);
+        LogToUi(progressMessage);
+
+        // If FFmpeg processing is complete, generate a media URL
+        // so that it can be played and/or downloaded)
+        if (message.Ratio == 1)
+        {
+            progressMessage = $"Progress: 100%";
+
+            // Get a bufferPointer from C WASM to C#
+            var res = await ffMpeg!.ReadFile(outputFile);
+
+            // Generate a URL from the file bufferPointer
+            videoOutputUrl = FFmpegFactory.CreateURLFromBuffer(res,
+                outputFile, "video/mp4");
+
+            // Download the file
+            if (download)
+            {
+                FFmpegFactory.DownloadBufferAsFile(res,
+                    outputFile, "video/mp4");
+            }
+
+            // Re render DOM
+            StateHasChanged();
+        }
+    }
+
+    private void LogToConsole(Logs message)
+    {
+        var logMessage = $"{message.Type} {message.Message}";
+        Console.WriteLine(logMessage);
+        LogToUi(logMessage);
+    }
+
+    private void LogToUi(string message)
+    {
+        logMessages += $"{message}\r\n";
+        // Re render DOM
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        FFmpegFactory.Logger -= LogToConsole;
+        FFmpegFactory.Progress -= ProgressChange;
+    }
+}

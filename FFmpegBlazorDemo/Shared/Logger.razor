@@ -1,0 +1,18 @@
+﻿<div>
+    <h3>Logs @Progress</h3>
+    <textarea rows="@Rows" readonly 
+        style="font-family:Lucida Sans Typewriter; font-size:12px;width:100%;">
+        @LogMessages
+    </textarea>
+</div>
+
+@code {
+    [Parameter]
+    public int Rows { get; set; } = 20;
+
+    [Parameter]
+    public string Progress { get; set; } = string.Empty;
+
+    [Parameter]
+    public string LogMessages { get; set; } = string.Empty;
+}
