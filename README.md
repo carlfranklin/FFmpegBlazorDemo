@@ -1079,10 +1079,11 @@ The complete code for this demo can be found in the link below.
 
 ## Resources
 
-| Resource Title                   | Url                                                                        |
-| -------------------------------- | -------------------------------------------------------------------------- |
-| The .NET Show with Carl Franklin | <https://www.youtube.com/playlist?list=PL8h4jt35t1wgW_PqzZ9USrHvvnk8JMQy_> |
-| Download .NET                    | <https://dotnet.microsoft.com/en-us/download>                              |
-| FFmpegBlazor                     | <https://github.com/sps014/FFmpegBlazor>                                   |
-| FFmpegBlazor NuGet Package       | <https://www.nuget.org/packages/FFmpegBlazor/>                             |
-| FFmpeg Documentation             | <https://ffmpeg.org/ffmpeg.html>                                           |
+| Resource Title             | Url                                            |
+| -------------------------- | ---------------------------------------------- |
+| BlazorTrain                | https://blazortrain.com                        |
+| The .NET Show              | https://thedotnetshow.com                      |
+| Download .NET              | <https://dotnet.microsoft.com/en-us/download>  |
+| FFmpegBlazor               | <https://github.com/sps014/FFmpegBlazor>       |
+| FFmpegBlazor NuGet Package | <https://www.nuget.org/packages/FFmpegBlazor/> |
+| FFmpeg Documentation       | <https://ffmpeg.org/ffmpeg.html>               |
