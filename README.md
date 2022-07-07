@@ -1,10 +1,10 @@
 ## Introduction
 
-In this episode, we are going to build a Blazor WebAssembly application, and I am going to show you how to edit videos, and audio using `FFmpegBlazor`.
+In this episode, we are going to build a Blazor WebAssembly application, and I am going to show you how to manipulate audio and video files using `FFmpegBlazor`.
 
 `FFmpegBlazor` provides the ability to utilize `ffmpeg.wasm` from a Blazor WebAssembly application using C#, to leverage all the benefits of `ffmpeg`.
 
-At the end of this demo, we are going to be able to extract the audio track of an MP4 video and create an MP3 audio file, create an MP4 video from a single image, and an audio track, add a watermark to a video, and concatenate two videos into one, all from the browser.
+At the end of this demo, we are going to be able to extract the audio track of an MP4 video and create an MP3 audio file, create an MP4 video from an image and an audio track, add a watermark to a video, and concatenate two videos into one, all inside the browser.
 
 Stay tuned, the end results will look like this:
 
@@ -26,7 +26,7 @@ For this demo, we are going to use the latest version of [Visual Studio 2022](ht
 
 ### ASP.NET and web development Workload
 
-In order to build Blazor apps, the `ASP.NET and web development` workload needs to be installed, so if you do not have that installed let's do that now.
+In order to build Blazor apps, the `ASP.NET and web development` workload needs to be installed.
 
 ![image-20220707092943396](md-images/image-20220707092943396.png)  
 
@@ -40,9 +40,9 @@ In the following demo we will create a Stand-Alone Blazor WebAssembly applicatio
 
 ### Create a Stand-Alone Blazor WebAssembly Application 
 
-### ![image-20220707093248749](.\md-images\image-20220707093248749.png)
+![image-20220707105621222](md-images/image-20220707105621222.png)
 
- Name it `FFmpegBlazorDemo`
+Name it `FFmpegBlazorDemo`
 
 ![image-20220707093334222](./md-images/image-20220707093334222.png)  
 
